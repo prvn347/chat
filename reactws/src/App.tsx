@@ -22,6 +22,7 @@ function App() {
   const playerRef = useRef<any>(null);
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
     playerRef.current = event.target;
+    event.target.pauseVideo();
   };
 
   const onPlayerPlay: YouTubeProps["onPlay"] = (event) => {
@@ -51,13 +52,16 @@ function App() {
     };
     newSocket(ws);
     return () => ws.close();
-  }, [play]);
+  }, []);
   useEffect(() => {
-    if (play) {
-      console.log("played bro");
-      playerRef.current?.playVideo();
-    } else {
-      playerRef.current?.pauseVideo();
+    if (playerRef.current) {
+      if (play) {
+        console.log("playing video");
+        playerRef.current.playVideo();
+      } else {
+        console.log("pausing video");
+        playerRef.current.pauseVideo();
+      }
     }
   }, [play]);
 
